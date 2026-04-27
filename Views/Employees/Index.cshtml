@@ -1,0 +1,48 @@
+@model IEnumerable<IT15_LabExam.Models.Employee>
+@{
+    ViewData["Title"] = "Employees";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">👤 Employee List</h2>
+    <a asp-action="Create" class="btn btn-primary">+ Add Employee</a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No employees found. <a asp-action="Create">Add the first one.</a></div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-primary">
+                <tr>
+                    <th>ID</th>
+                    <th>Full Name</th>
+                    <th>Position</th>
+                    <th>Department</th>
+                    <th>Daily Rate</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var emp in Model)
+                {
+                    <tr>
+                        <td>@emp.EmployeeId</td>
+                        <td>@emp.FullName</td>
+                        <td>@emp.Position</td>
+                        <td>@emp.Department</td>
+                        <td>₱@emp.DailyRate.ToString("N2")</td>
+                        <td class="text-center">
+                            <a asp-action="Edit" asp-route-id="@emp.EmployeeId" class="btn btn-sm btn-warning">Edit</a>
+                            <a asp-controller="Payrolls" asp-action="Index" asp-route-employeeId="@emp.EmployeeId" class="btn btn-sm btn-info">Payroll</a>
+                            <a asp-action="Delete" asp-route-id="@emp.EmployeeId" class="btn btn-sm btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

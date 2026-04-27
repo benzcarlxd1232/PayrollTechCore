@@ -1,0 +1,87 @@
+@model IEnumerable<IT15_LabExam.Models.Payroll>
+@{
+    ViewData["Title"] = "Payroll";
+    var filterEmp = ViewBag.FilterEmployee as IT15_LabExam.Models.Employee;
+    int? selectedId = ViewBag.SelectedEmployeeId;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">💰 Payroll Records</h2>
+    <a asp-action="Create" asp-route-employeeId="@selectedId" class="btn btn-success">+ Add Payroll</a>
+</div>
+
+@* Filter by employee *@
+<div class="card mb-4 shadow-sm">
+    <div class="card-body py-2">
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col-md-5">
+                <label class="form-label mb-1 fw-semibold">Filter by Employee</label>
+                <select name="employeeId" class="form-select" asp-items="ViewBag.Employees">
+                    <option value="">— All Employees —</option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Filter</button>
+                <a asp-action="Index" class="btn btn-outline-secondary ms-1">Clear</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (filterEmp != null)
+{
+    <div class="alert alert-info">
+        Showing payroll for: <strong>@filterEmp.FullName</strong> — Daily Rate: ₱@filterEmp.DailyRate.ToString("N2")
+    </div>
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-secondary">No payroll records found.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-success">
+                <tr>
+                    <th>ID</th>
+                    <th>Employee</th>
+                    <th>Date</th>
+                    <th>Days Worked</th>
+                    <th>Gross Pay</th>
+                    <th>Deduction</th>
+                    <th>Net Pay</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Model)
+                {
+                    <tr>
+                        <td>@p.PayrollId</td>
+                        <td>@p.Employee?.FullName</td>
+                        <td>@p.Date.ToString("MMM dd, yyyy")</td>
+                        <td>@p.DaysWorked</td>
+                        <td class="text-success fw-semibold">₱@p.GrossPay.ToString("N2")</td>
+                        <td class="text-danger">₱@p.Deduction.ToString("N2")</td>
+                        <td class="fw-bold text-primary">₱@p.NetPay.ToString("N2")</td>
+                        <td class="text-center">
+                            <a asp-action="Edit" asp-route-id="@p.PayrollId" class="btn btn-sm btn-warning">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@p.PayrollId" class="btn btn-sm btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot class="table-light fw-bold">
+                <tr>
+                    <td colspan="4" class="text-end">Totals:</td>
+                    <td class="text-success">₱@Model.Sum(p => p.GrossPay).ToString("N2")</td>
+                    <td class="text-danger">₱@Model.Sum(p => p.Deduction).ToString("N2")</td>
+                    <td class="text-primary">₱@Model.Sum(p => p.NetPay).ToString("N2")</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+}

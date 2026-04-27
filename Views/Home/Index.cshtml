@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="text-center py-5">
+    <h1 class="display-5 fw-bold text-primary">Employee & Payroll System</h1>
+    <p class="lead text-muted">TechCore Solutions — HR Management Portal</p>
+    <hr class="my-4" />
+    <div class="row justify-content-center g-4 mt-2">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center p-4">
+                    <div class="display-4 mb-3">👤</div>
+                    <h4 class="card-title">Employees</h4>
+                    <p class="card-text text-muted">Manage employee records — add, view, edit, and delete.</p>
+                    <a asp-controller="Employees" asp-action="Index" class="btn btn-primary mt-2">Go to Employees</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center p-4">
+                    <div class="display-4 mb-3">💰</div>
+                    <h4 class="card-title">Payroll</h4>
+                    <p class="card-text text-muted">Process payroll transactions and view salary computations.</p>
+                    <a asp-controller="Payrolls" asp-action="Index" class="btn btn-success mt-2">Go to Payroll</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
